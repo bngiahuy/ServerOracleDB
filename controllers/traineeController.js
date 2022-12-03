@@ -1,11 +1,13 @@
 const oracledb = require('oracledb');
+require('dotenv').config()
+
 const getAllTrainee = (req, res) => {
     const fetchData = async () => {
         try {
             const conn = await oracledb.getConnection({
-                user: 'phuc',
-                password: 'zxcvbnm',
-                connectionString: 'localhost/xe'
+                user: process.env.user,
+                password: process.env.password,
+                connectionString: process.env.connectionString
             })
             const result = await conn.execute('select person.ssn,person.fname,person.lname,person.address,person.phone,trainee.photo from trainee,person where person.ssn = trainee.ssn');
             return result
@@ -20,9 +22,9 @@ const searchTrainee = (req, res) => {
     const fetchData = async () => {
         try {
             const conn = await oracledb.getConnection({
-                user: 'phuc',
-                password: 'zxcvbnm',
-                connectionString: 'localhost/xe'
+                user: process.env.user,
+                password: process.env.password,
+                connectionString: process.env.connectionString
             })
             const result = await conn.execute(
                 `SELECT
@@ -62,9 +64,9 @@ const getTraineeDetail = (req, res) => {
     const fetchData = async () => {
         try {
             const conn = await oracledb.getConnection({
-                user: 'phuc',
-                password: 'zxcvbnm',
-                connectionString: 'localhost/xe'
+                user: process.env.user,
+                password: process.env.password,
+                connectionString: process.env.connectionString
             })
             const result = await conn.execute(
                 `SELECT *
@@ -97,9 +99,9 @@ const getTraineeDetail = (req, res) => {
 
 const createTrainee = async (req, res) => {
     const conn = await oracledb.getConnection({
-        user: 'phuc',
-        password: 'zxcvbnm',
-        connectionString: 'localhost/xe'
+        user: process.env.user,
+        password: process.env.password,
+        connectionString: process.env.connectionString
     })
     const checkExistenceSSN = await conn.execute(`select * from person where person.ssn = ${+req.body.ssn}`);
     if (checkExistenceSSN.rows.length != 0) {
@@ -128,9 +130,9 @@ const createTrainee = async (req, res) => {
 
 const getTraineeResult = async (req, res) => {
     const conn = await oracledb.getConnection({
-        user: 'phuc',
-        password: 'zxcvbnm',
-        connectionString: 'localhost/xe'
+        user: process.env.user,
+        password: process.env.password,
+        connectionString: process.env.connectionString
     })
     const result = await conn.execute('SELECT result_trainee(:p1, :p2) from dual', { p1: req.body.ssn, p2: req.body.year });
     return res.json(result.rows)

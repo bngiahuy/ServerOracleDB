@@ -1,12 +1,13 @@
 const oracledb = require('oracledb');
+require('dotenv').config()
 
 const getAllSeason = (req, res) => {
     const fetchData = async () => {
         try {
             const conn = await oracledb.getConnection({
-                user: 'phuc',
-                password: 'zxcvbnm',
-                connectionString: 'localhost/xe'
+                user: process.env.user,
+                password: process.env.password,
+                connectionString: process.env.connectionString
             })
             const result = await conn.execute('select year from season');
             return result
